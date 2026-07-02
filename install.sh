@@ -3,7 +3,7 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/ExHo7/my_exegol.git"
-RESOURCES_DIR="$HOME/.exegol/my_resources"
+RESOURCES_DIR="$HOME/.exegol/my-resources/setup/"
 TMP_DIR=""
 
 # Colored output helpers
@@ -34,7 +34,7 @@ for cmd in git cp wget; do
   fi
 done
 
-info "Installing my_exegol resources..."
+info "Installing resources..."
 
 # Clone repo into an isolated temp directory
 TMP_DIR="$(mktemp -d)"
@@ -52,4 +52,4 @@ cp conf/aliases   "$RESOURCES_DIR/zsh/aliases"
 cp bash/load_user_setup.sh "$RESOURCES_DIR/load_user_setup.sh"
 chmod +x "$RESOURCES_DIR/load_user_setup.sh"
 
-ok "my_exegol resources successfully installed !"
+ok "Resources successfully installed !"
