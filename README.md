@@ -1,78 +1,78 @@
 # my_exegol
 
-Configuration personnelle et ressources pour [Exegol](https://github.com/ThePorgs/Exegol), l'environnement de pentest. Ce dépôt automatise l'installation d'outils, d'alias, de configurations tmux/netexec et d'un script de recon DNS via la fonctionnalité `my-resources` d'Exegol.
+Personal configuration and resources for [Exegol](https://github.com/ThePorgs/Exegol). This repository automates the installation of tools, aliases, tmux/netexec configurations and a DNS recon script taken from [Frozenka](https://github.com/Frozenka/Exegol-Ressources)'s repo 🙏 through Exegol's `my-resources` feature. It's a lightweight config bundling personal tooling.
 
-## Contenu
+## Contents
 
 ```
 my_exegol/
-├── install.sh                    # Script d'installation des ressources
+├── install.sh                    # Resources installation script
 ├── bash/
-│   ├── getdns.sh                 # Recon DNS : dnsvalidator + amass
-│   └── load_user_setup.sh        # Setup exécuté au 1er démarrage du conteneur
+│   ├── getdns.sh                 # DNS recon: dnsvalidator + amass
+│   └── load_user_setup.sh        # Setup run on the container's first startup
 └── conf/
-    ├── aliases                   # Alias zsh personnels
-    ├── nxc.conf                  # Configuration NetExec
-    └── tmux.conf                 # Configuration tmux améliorée
+    ├── aliases                   # Personal zsh aliases
+    ├── nxc.conf                  # NetExec configuration
+    └── tmux.conf                 # Enhanced tmux configuration
 ```
 
 ## Installation
 
-Depuis un conteneur Exegol avec la feature `my-resources` activée :
+From your host:
 
 ```sh
 wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/master/install.sh | bash
 ```
 
-Le script `install.sh` copie les fichiers de configuration dans `~/.exegol/my_resources/`. Le fichier `load_user_setup.sh` s'exécute ensuite au premier démarrage de chaque nouveau conteneur.
+The `install.sh` script copies the configuration files into `~/.exegol/my_resources/`. The `load_user_setup.sh` file then runs on the first startup of each new container.
 
-## Ce qui est installé
+## What gets installed
 
-`load_user_setup.sh` provisionne automatiquement :
+`load_user_setup.sh` automatically provisions:
 
-| Outil / Config | Description |
-|----------------|-------------|
-| **HTBRecon** | Outil de recon Hack The Box |
-| **Claude Code** | CLI Claude |
-| **Tmux plugins (tpm)** | Gestionnaire de plugins tmux |
-| **SSTImap** | Détection et exploitation d'injections SSTI |
-| **DNS Validator** | Script `getdns.sh` de recon DNS |
-| **NetExec** | Configuration `nxc.conf` |
+| Tool / Config | Description |
+|---------------|-------------|
+| **HTBRecon** | Hack The Box recon tool |
+| **Claude Code** | Claude CLI |
+| **Tmux plugins (tpm)** | tmux plugin manager |
+| **SSTImap** | SSTI injection detection and exploitation |
+| **DNS Validator** | `getdns.sh` DNS recon script |
+| **NetExec** | `nxc.conf` configuration |
 
 ## Configurations
 
 ### tmux (`conf/tmux.conf`)
 
-- Souris activée dans tmux
-- Copier la sélection au clic gauche, coller au clic droit
-- Split en quatre panneaux avec `Ctrl+b '`
-- Fermer les sessions actives avec `Ctrl+b x`
-- Barre de statut : date, IP (eth0/wlo1/tun0), IP publique, connexions, CPU, RAM
+- Mouse enabled in tmux
+- Copy selection on left click, paste on right click
+- Split into four panes with `Ctrl+b '`
+- Close active sessions with `Ctrl+b x`
+- Status bar: date, IP (eth0/wlo1/tun0), public IP, connections, CPU, RAM
 
-### Alias (`conf/aliases`)
+### Aliases (`conf/aliases`)
 
 | Alias | Action |
 |-------|--------|
-| `tun0` / `eth0` | Copie l'IP de l'interface dans le presse-papiers |
-| `runwww` | Serveur HTTP d'upload (`uploadserver`) |
-| `runftp` | Serveur FTP (`pyftpdlib`) |
-| `runwebdav` | Serveur WebDAV |
-| `runsmbserv` | Serveur SMB + commande `net use` copiée |
-| `pty` | Copie un one-liner spawn PTY Python |
-| `phpshell` | Copie un webshell PHP |
-| `getdns` | Lance la recon DNS |
-| `responder` | Responder sur eth0 |
-| `sstimap` | Lance SSTImap |
-| `getfr` / `getrdp` | Copie des commandes PowerShell (locale FR / activation RDP) |
+| `tun0` / `eth0` | Copies the interface IP to the clipboard |
+| `runwww` | HTTP upload server (`uploadserver`) |
+| `runftp` | FTP server (`pyftpdlib`) |
+| `runwebdav` | WebDAV server |
+| `runsmbserv` | SMB server + `net use` command copied |
+| `pty` | Copies a Python PTY spawn one-liner |
+| `phpshell` | Copies a PHP webshell |
+| `getdns` | Runs the DNS recon |
+| `responder` | Responder on eth0 |
+| `sstimap` | Runs SSTImap |
+| `getfr` / `getrdp` | Copies PowerShell commands (FR locale / RDP enable) |
 
 ### getdns.sh
 
-Recon DNS automatisé :
-1. Génère une liste de résolveurs valides avec `dnsvalidator`
-2. Attend 50 résolveurs puis lance `amass enum` en bruteforce sur le FQDN fourni
-3. Sortie dans `/tmp/domains.txt`
+Automated DNS recon:
+1. Generates a list of valid resolvers with `dnsvalidator`
+2. Waits for 50 resolvers then runs `amass enum` in bruteforce mode against the provided FQDN
+3. Output in `/tmp/domains.txt`
 
 ```sh
 getdns
-# Entrez le FQDN : exemple.com
+# Enter the FQDN: example.com
 ```
