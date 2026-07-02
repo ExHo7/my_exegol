@@ -14,3 +14,4 @@ alias phpshell='echo "<?php system(\$_GET[\"cmd\"]); ?>" | xclip -selection clip
 alias cls='clear'
 alias sstimap='/opt/tools/SSTImap/sstimap.py'
 alias getdns='/opt/tools/dnsvalidator/getdns.sh'
+alias dnsvalidator='/opt/tools/dnsvalidator/dnsvalidator.py'

@@ -34,7 +34,8 @@ echo "SSTi Map successfully installed !"
 
 # DNS validator
 echo "Installing DNS Validator..."
-git clone https://github.com/vortexau/dnsvalidator.git /opt/tools/dnsvalidator && python3 /opt/tools/dnsvalidator/setup.py install
+git clone https://github.com/vortexau/dnsvalidator.git /opt/tools/dnsvalidator && cd /opt/tools/dnsvalidator && python3 setup.py install
+chmod +x /opt/tools/dnsvalidator/dnsvalidator.py
 wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/master/bash/getdns.sh > /opt/tools/dnsvalidator/getdns.sh
 chmod +x /opt/tools/dnsvalidator/getdns.sh
 echo "DNS Validator successfully installed !"
