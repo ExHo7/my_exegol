@@ -35,13 +35,13 @@ echo "SSTi Map successfully installed !"
 # DNS validator
 echo "Installing DNS Validator..."
 mkdir -p /opt/tools/DNSValidator
-wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/main/bash/getdns.sh > /opt/tools/DNSValidator/getdns.sh
+wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/master/bash/getdns.sh > /opt/tools/DNSValidator/getdns.sh
 chmod +x /opt/tools/DNSValidator/getdns.sh
 echo "DNS Validator successfully installed !"
 
 # Netexec configuration
 echo "Configuring Netexec..."
-wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/main/conf/nxc.conf > ~/.nxc/nxc.conf
+wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/master/conf/nxc.conf > ~/.nxc/nxc.conf
 echo "Netexec successfully configured !" 
 
 
