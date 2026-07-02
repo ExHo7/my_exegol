@@ -21,7 +21,7 @@ my_exegol/
 Depuis un conteneur Exegol avec la feature `my-resources` activée :
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/main/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/master/install.sh | bash
 ```
 
 Le script `install.sh` copie les fichiers de configuration dans `~/.exegol/my_resources/`. Le fichier `load_user_setup.sh` s'exécute ensuite au premier démarrage de chaque nouveau conteneur.
