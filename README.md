@@ -1,20 +1,6 @@
 # my_exegol
 
-Personal configuration and resources for [Exegol](https://github.com/ThePorgs/Exegol). This repository automates the installation of tools, aliases, tmux/netexec configurations and a DNS recon script taken from [Frozenka](https://github.com/Frozenka/Exegol-Ressources)'s repo 🙏 through Exegol's `my-resources` feature. It's a lightweight config bundling personal tooling.
-
-## Contents
-
-```
-my_exegol/
-├── install.sh                    # Resources installation script
-├── bash/
-│   ├── getdns.sh                 # DNS recon: dnsvalidator + amass
-│   └── load_user_setup.sh        # Setup run on the container's first startup
-└── conf/
-    ├── aliases                   # Personal zsh aliases
-    ├── nxc.conf                  # NetExec configuration
-    └── tmux.conf                 # Enhanced tmux configuration
-```
+Personal configuration and resources for [Exegol](https://github.com/ThePorgs/Exegol). This repository automates the installation of tools, aliases, tmux/netexec configurations taken from [Frozenka](https://github.com/Frozenka/Exegol-Ressources)'s repo 🙏 through Exegol's `my-resources` feature. It's a lightweight config bundling personal tooling.
 
 ## Installation
 
@@ -36,7 +22,6 @@ The `install.sh` script copies the configuration files into `~/.exegol/my_resour
 | **Claude Code** | Claude CLI |
 | **Tmux plugins (tpm)** | tmux plugin manager |
 | **SSTImap** | SSTI injection detection and exploitation |
-| **DNS Validator** | `getdns.sh` DNS recon script |
 | **NetExec** | `nxc.conf` configuration |
 
 ## Configurations
@@ -54,25 +39,10 @@ The `install.sh` script copies the configuration files into `~/.exegol/my_resour
 | Alias | Action |
 |-------|--------|
 | `tun0` / `eth0` | Copies the interface IP to the clipboard |
-| `runwww` | HTTP upload server (`uploadserver`) |
 | `runftp` | FTP server (`pyftpdlib`) |
-| `runwebdav` | WebDAV server |
 | `runsmbserv` | SMB server + `net use` command copied |
 | `pty` | Copies a Python PTY spawn one-liner |
 | `phpshell` | Copies a PHP webshell |
-| `getdns` | Runs the DNS recon |
 | `responder` | Responder on eth0 |
 | `sstimap` | Runs SSTImap |
 | `getfr` / `getrdp` | Copies PowerShell commands (FR locale / RDP enable) |
-
-### getdns.sh
-
-Automated DNS recon:
-1. Generates a list of valid resolvers with `dnsvalidator`
-2. Waits for 50 resolvers then runs `amass enum` in bruteforce mode against the provided FQDN
-3. Output in `/tmp/domains.txt`
-
-```sh
-getdns
-# Enter the FQDN: example.com
-```
