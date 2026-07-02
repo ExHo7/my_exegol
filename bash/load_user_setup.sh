@@ -35,7 +35,7 @@ echo "SSTi Map successfully installed !"
 # DNS validator
 echo "Installing DNS Validator..."
 mkdir -p /opt/tools/DNSValidator
-wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/main/bash/dns_validator.sh > /opt/tools/DNSValidator/getdns.sh
+wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/main/bash/getdns.sh > /opt/tools/DNSValidator/getdns.sh
 chmod +x /opt/tools/DNSValidator/getdns.sh
 echo "DNS Validator successfully installed !"
 

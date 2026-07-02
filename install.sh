@@ -1,9 +1,55 @@
+#!/bin/bash
 # Installing my_exegol resources
-echo "Installing my_exegol resources..."
-git clone https://github.com/ExHo7/my_exegol.git
-cd my_exegol
-cp conf/tmux.conf ~/.exegol/my_resources/tmux/tmux.conf
-cp conf/aliases ~/.exegol/my_resources/zsh/aliases
-wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/main/load_user_setup.sh && cat load_user_setup.sh > ~/.exegol/my_resources/load_user_setup.sh
-cd .. && rm -rf my_exegol
-echo "my_exegol resources successfully installed !"
+set -euo pipefail
+
+REPO_URL="https://github.com/ExHo7/my_exegol.git"
+RESOURCES_DIR="$HOME/.exegol/my_resources"
+TMP_DIR=""
+
+# Colored output helpers
+info()  { echo -e "\033[1;34m[*]\033[0m $*"; }
+ok()    { echo -e "\033[1;32m[+]\033[0m $*"; }
+error() { echo -e "\033[1;31m[-]\033[0m $*" >&2; }
+
+# Cleanup temp clone on exit (success or failure)
+cleanup() {
+  if [ -n "$TMP_DIR" ] && [ -d "$TMP_DIR" ]; then
+    rm -rf "$TMP_DIR"
+  fi
+}
+trap cleanup EXIT
+
+# Report the failing line on error
+on_error() {
+  error "Installation failed (line $1). Aborting."
+  exit 1
+}
+trap 'on_error $LINENO' ERR
+
+# Check required commands are available
+for cmd in git cp wget; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    error "Required command not found: $cmd"
+    exit 1
+  fi
+done
+
+info "Installing my_exegol resources..."
+
+# Clone repo into an isolated temp directory
+TMP_DIR="$(mktemp -d)"
+info "Cloning repository..."
+git clone --depth 1 "$REPO_URL" "$TMP_DIR/my_exegol"
+cd "$TMP_DIR/my_exegol"
+
+# Ensure target directories exist
+mkdir -p "$RESOURCES_DIR/tmux" "$RESOURCES_DIR/zsh"
+
+# Copy configuration files
+info "Copying configuration files..."
+cp conf/tmux.conf "$RESOURCES_DIR/tmux/tmux.conf"
+cp conf/aliases   "$RESOURCES_DIR/zsh/aliases"
+cp bash/load_user_setup.sh "$RESOURCES_DIR/load_user_setup.sh"
+chmod +x "$RESOURCES_DIR/load_user_setup.sh"
+
+ok "my_exegol resources successfully installed !"
