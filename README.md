@@ -23,6 +23,7 @@ The `install.sh` script copies the configuration files into `~/.exegol/my_resour
 | **Tmux plugins (tpm)** | tmux plugin manager |
 | **SSTImap** | SSTI injection detection and exploitation |
 | **NetExec** | `nxc.conf` configuration |
+| **Dalfox**  | Dalfox xss detection |
 
 ## Configurations
 
