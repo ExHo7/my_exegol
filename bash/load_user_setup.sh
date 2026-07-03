@@ -35,7 +35,20 @@ echo "SSTi Map successfully installed !"
 # Netexec configuration
 echo "Configuring Netexec..."
 wget -qO- https://raw.githubusercontent.com/ExHo7/my_exegol/master/conf/nxc.conf > ~/.nxc/nxc.conf
-echo "Netexec successfully configured !" 
+echo "Netexec successfully configured !"
+
+# Dalfox
+echo "Installing Dalfox..."
+# déterminé architecture amd64 ou arm64
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+    wget https://github.com/hahwul/dalfox/releases/download/v3.1.2/dalfox-v3.1.2-linux-x86_64-musl.tar.gz && tar -xvzf dalfox-v3.1.2-linux-x86_64-musl.tar.gz && mv dalfox /usr/local/bin/ && rm dalfox-v3.1.2-linux-x86_64-musl.tar.gz
+elif [ "$ARCH" = "aarch64" ]; then
+    wget https://github.com/hahwul/dalfox/releases/download/v3.1.2/dalfox-v3.1.2-linux-aarch64-musl.tar.gz && tar -xvzf dalfox-v3.1.2-linux-aarch64-musl.tar.gz && mv dalfox /usr/local/bin/ && rm dalfox-v3.1.2-linux-aarch64-musl.tar.gz
+fi
+echo "Dalfox successfully installed !"
+
+
 
 
 
