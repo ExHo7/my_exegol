@@ -41,9 +41,9 @@ echo "Netexec successfully configured !"
 echo "Installing Dalfox..."
 ARCH=$(uname -m)
 if [ "$ARCH" = "x86_64" ]; then
-    wget https://github.com/hahwul/dalfox/releases/download/v3.1.2/dalfox-v3.1.2-linux-x86_64-musl.tar.gz -O dalfox.tar.gz && tar -xvzf dalfox.tar.gz && mv dalfox-v3.1.2-linux-x86_64-musl/dalfox /usr/bin/dalfox && rm dalfox-v3.1.2-linux-x86_64-musl.tar.gz && rm -rf dalfox-v3.1.2-linux-x86_64-musl/
+    wget https://github.com/hahwul/dalfox/releases/download/v3.1.2/dalfox-v3.1.2-linux-x86_64-musl.tar.gz -O dalfox.tar.gz && tar -xvzf dalfox.tar.gz && mv dalfox-v3.1.2-linux-x86_64-musl/dalfox /usr/bin/dalfox && rm -rf dalfox.tar.gz dalfox-v3.1.2-linux-x86_64-musl
 elif [ "$ARCH" = "arm64" ]; then
-    wget https://github.com/hahwul/dalfox/releases/download/v3.1.2/dalfox-v3.1.2-linux-aarch64-musl.tar.gz -O dalfox.tar.gz && tar -xvzf dalfox.tar.gz && mv dalfox-v3.1.2-linux-aarch64-musl/dalfox /usr/bin/dalfox && rm dalfox-v3.1.2-linux-aarch64-musl.tar.gz && rm -rf dalfox-v3.1.2-linux-aarch64-musl/
+    wget https://github.com/hahwul/dalfox/releases/download/v3.1.2/dalfox-v3.1.2-linux-aarch64-musl.tar.gz -O dalfox.tar.gz && tar -xvzf dalfox.tar.gz && mv dalfox-v3.1.2-linux-aarch64-musl/dalfox /usr/bin/dalfox && rm -rf dalfox.tar.gz dalfox-v3.1.2-linux-aarch64-musl
 fi
 echo "Dalfox successfully installed !"
 
