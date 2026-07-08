@@ -54,9 +54,7 @@ cp conf/apt-packages.list "$RESOURCES_DIR/apt/packages.list"
 cp bash/load_user_setup.sh "$RESOURCES_DIR/load_user_setup.sh"
 chmod +x "$RESOURCES_DIR/load_user_setup.sh"
 
-# Deploy the prebuilt Sliver GUI binary onto the container PATH.
-# ~/.exegol/my-resources/bin is mounted as /opt/my-resources/bin, which Exegol
-# adds to PATH in every container, so 'sliver-gui' becomes directly callable.
+# Deploy sliver-gui binary
 if [ -f bin/sliver-gui ]; then
   info "Installing Sliver GUI binary..."
   cp bin/sliver-gui "$MYRES_BIN/sliver-gui"
