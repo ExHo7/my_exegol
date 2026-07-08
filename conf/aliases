@@ -70,3 +70,32 @@ sliver-gui-server() {
     echo "[+] Operator config       -> ${CFG}"
     echo "[+] Now launch the GUI: sliver-gui   (Pick config -> ${CFG} -> Connect)"
 }
+
+# --- Sliver operator console (CLI) ---
+# Terminal client for the v1.7.3 teamserver started by 'sliver-gui-server'. Downloads the
+# matching v1.7.3 client on first call (arch-aware), imports the operator config, then opens
+# the interactive console. Can run alongside the GUI on the same daemon (multiplayer).
+# Usage: run 'sliver-gui-server' once, then 'sliver-cli'.
+sliver-cli() {
+    local BIN="/opt/my-resources/bin/sliver-client-1.7.3"
+    local CFG="/root/op17.cfg"
+    local arch pkgarch
+    arch="$(uname -m)"
+    case "$arch" in
+        x86_64)        pkgarch="amd64" ;;
+        aarch64|arm64) pkgarch="arm64" ;;
+        *) echo "[-] Unsupported architecture: $arch"; return 1 ;;
+    esac
+    if [ ! -x "$BIN" ]; then
+        echo "[*] Downloading sliver-client v1.7.3 (${pkgarch})..."
+        wget -q "https://github.com/BishopFox/sliver/releases/download/v1.7.3/sliver-client_linux-${pkgarch}" -O "$BIN" \
+            && chmod +x "$BIN" || { echo "[-] Download failed"; rm -f "$BIN"; return 1; }
+    fi
+    if [ ! -f "$CFG" ]; then
+        echo "[-] Operator config ${CFG} not found. Run 'sliver-gui-server' first."
+        return 1
+    fi
+    # Import the operator config (idempotent: overwrites the same-named profile), then connect.
+    "$BIN" import "$CFG" >/dev/null 2>&1
+    "$BIN"
+}
