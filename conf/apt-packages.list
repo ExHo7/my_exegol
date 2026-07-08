@@ -1,0 +1,10 @@
+# Packages installed automatically on the first startup of each new Exegol container
+# (via the my-resources "apt" feature: this file is deployed to setup/apt/packages.list).
+# One package name per line. Lines starting with '#' are ignored.
+
+# --- Sliver GUI runtime dependencies ---
+# The prebuilt sliver-gui binary (Wails: WebKit webview + GTK) links these shared
+# libraries dynamically. They are NOT present in the base image, so the binary would
+# fail with "error while loading shared libraries" without them.
+libwebkit2gtk-4.0-37
+libgtk-3-0

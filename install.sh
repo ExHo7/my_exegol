@@ -4,6 +4,7 @@ set -euo pipefail
 
 REPO_URL="https://github.com/ExHo7/my_exegol.git"
 RESOURCES_DIR="$HOME/.exegol/my-resources/setup/"
+MYRES_BIN="$HOME/.exegol/my-resources/bin"
 TMP_DIR=""
 
 # Colored output helpers
@@ -43,13 +44,25 @@ git clone --depth 1 "$REPO_URL" "$TMP_DIR/my_exegol"
 cd "$TMP_DIR/my_exegol"
 
 # Ensure target directories exist
-mkdir -p "$RESOURCES_DIR/tmux" "$RESOURCES_DIR/zsh"
+mkdir -p "$RESOURCES_DIR/tmux" "$RESOURCES_DIR/zsh" "$RESOURCES_DIR/apt" "$MYRES_BIN"
 
 # Copy configuration files
 info "Copying configuration files..."
 cp conf/tmux.conf "$RESOURCES_DIR/tmux/tmux.conf"
 cp conf/aliases   "$RESOURCES_DIR/zsh/aliases"
+cp conf/apt-packages.list "$RESOURCES_DIR/apt/packages.list"
 cp bash/load_user_setup.sh "$RESOURCES_DIR/load_user_setup.sh"
 chmod +x "$RESOURCES_DIR/load_user_setup.sh"
+
+# Deploy the prebuilt Sliver GUI binary onto the container PATH.
+# ~/.exegol/my-resources/bin is mounted as /opt/my-resources/bin, which Exegol
+# adds to PATH in every container, so 'sliver-gui' becomes directly callable.
+if [ -f bin/sliver-gui ]; then
+  info "Installing Sliver GUI binary..."
+  cp bin/sliver-gui "$MYRES_BIN/sliver-gui"
+  chmod +x "$MYRES_BIN/sliver-gui"
+else
+  error "bin/sliver-gui not found in the repository (did you commit and push it?). Skipping."
+fi
 
 ok "Resources successfully installed !"

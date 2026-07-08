@@ -24,6 +24,7 @@ The `install.sh` script copies the configuration files into `~/.exegol/my_resour
 | **SSTImap** | SSTI injection detection and exploitation |
 | **NetExec** | `nxc.conf` configuration |
 | **Dalfox**  | Dalfox xss detection |
+| **Sliver GUI** | Prebuilt Wails GUI client + on-demand v1.7.3 teamserver |
 
 ## Configurations
 
@@ -47,3 +48,24 @@ The `install.sh` script copies the configuration files into `~/.exegol/my_resour
 | `responder` | Responder on eth0 |
 | `sstimap` | Runs SSTImap |
 | `getfr` / `getrdp` | Copies PowerShell commands (FR locale / RDP enable) |
+| `sliver-gui-server` | Downloads/starts the Sliver v1.7.3 teamserver + generates the operator config |
+
+### Sliver GUI
+
+The prebuilt [`sliver-gui`](https://github.com/Mr-In4inci3le/sliver-gui) binary is shipped
+in `bin/` and deployed to `/opt/my-resources/bin/sliver-gui` (on the container `PATH`).
+Its GTK/WebKit runtime dependencies are installed automatically on the first container
+startup via `conf/apt-packages.list`.
+
+The GUI is only the **client**. It is built against Sliver **v1.7.3** protobufs, so it
+needs a matching v1.7.3 teamserver — the Sliver bundled in Exegol is older and makes the
+`Generate` panel fail (protobuf field mismatch). Use the helper to spin up the right
+server on demand:
+
+```sh
+sliver-gui-server   # first call downloads the v1.7.3 server (~260MB, cached), starts the daemon + writes /root/op17.cfg
+sliver-gui          # open the GUI → Pick config → /root/op17.cfg → Connect
+```
+
+The v1.7.3 server runs isolated in `/root/.sliver-17` and does not touch Exegol's bundled
+Sliver. In the GUI, set the C2 URL manually (e.g. `mtls://127.0.0.1:8443`) for `Generate`.
