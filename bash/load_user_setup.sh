@@ -47,7 +47,22 @@ elif [ "$ARCH" = "arm64" ]; then
 fi
 echo "Dalfox successfully installed !"
 
+# Nmap-View
+echo "Installing Nmap-View..."
+wget https://github.com/ExHo7/nmap-view/releases/download/v0.2.0/nmap-view-v0.2.0-x86_64-linux-musl.tar.gz -O nmap-view.tar.gz && gunzip nmap-view.tar.gz && tar -xvf nmap-view.tar && install -m 755 nmap-view-v0.2.0-x86_64-linux-musl/nmap-view /usr/local/bin/nmap-view && rm -rf nmap-view.tar nmap-view-v0.2.0-x86_64-linux-musl
+if [ -f /usr/local/bin/nmap-view ]; then
+    echo "Nmap-View successfully installed !"
+else
+    echo "Nmap-View installation failed."
+fi
 
-
-
+# GLPwnme
+echo "Installing GLPwnme..."
+git clone https://github.com/Orange-Cyberdefense/glpwnme.git /opt/tools/glpwnme
+pipx install /opt/tools/glpwnme
+if [ -f /root/.local/share/pipx/venvs/glpwnme/bin/glpwnme ]; then
+    echo "GLPwnme successfully installed !"
+else
+    echo "GLPwnme installation failed !"
+fi
 
